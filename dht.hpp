@@ -1,5 +1,12 @@
 #include <complex>
 #include <cmath>
+/*
+based on code from:
+http://wwwa.pikara.ne.jp/okojisan/otfft-en/optimization1.html
+*/
+
+#include <complex>
+#include <cmath>
 
 //typedef std::complex<float> complex_t;
 
@@ -40,26 +47,25 @@ void fft0(int n, int s, bool eo, complex_t* x, complex_t* y)
 }
 
 template <typename T>
-void dht(std::vector<T> & x_real) 
+void dht(T * begin, int n)
 {
-    int n = static_cast<int>(x_real.size());
     std::vector<std::complex<T>> y(n);
-    std::vector<std::complex<T>> x(x_real.begin(), x_real.end());
+    std::vector<std::complex<T>> x(begin, begin + n);
 
-    fft0(n, 1, 0, x.data(), y.data());    
-    for (int i=0; i<x_real.size(); ++i)
+    fft0(n, 1, 0, x.data(), y.data());
+    for (int i=0; i<n; ++i)
     {
-        x_real[i] = x[i].real() - x[i].imag();
+        begin[i] = x[i].real() - x[i].imag();
     }
 }
 
 template <typename T>
-void idht(std::vector<T> & x_real)
+void idht(T * begin, int n)
 {
-    dht(x_real);
-    float scale = T(1) / static_cast<int>(x_real.size());
-    for (auto & x : x_real) 
+    dht(begin, n);
+    float scale = T(1) / n;
+    for (int i=0; i < n; ++i)
     {
-        x *= scale;
+        begin[i] *= scale;
     }
 }
