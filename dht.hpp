@@ -63,7 +63,7 @@ template <typename T>
 void idht(T * begin, int n)
 {
     dht(begin, n);
-    float scale = T(1) / n;
+    T scale = T(1) / n;
     for (int i=0; i < n; ++i)
     {
         begin[i] *= scale;
