@@ -1,2 +1,2 @@
 # dht
-Discrete Hartley Transform in C
+Discrete Hartley Transform in C++
